@@ -46,6 +46,9 @@ Este repositorio tiene adjunto tambien el **archivo de Excel(xlsx)** con sus res
 
 ## Script
 
+Hay un script adjunto en el SQL con el nombre de la base de datos el cual se puede ejecutar con 
+
+
 CREATE DATABASE IF NOT EXISTS sabor_exquisito;
 
 USE sabor_exquisito;
