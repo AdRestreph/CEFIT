@@ -9,3 +9,10 @@
 ## DER (Diagrama Entidad Relacion)
 ![alt text]({3971BF3B-FF94-4233-B37F-EA5BA83E788C}.png)
 
+## Diccionario de datos
+
+### Tabla cliente
+![alt text]({43604539-098F-46E0-916A-52B67864C9F5}.png)
+
+### Tabla mesa
+![alt text]({DD84D411-893A-48B0-AE61-B17183E9A77B}.png)
