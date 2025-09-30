@@ -8,11 +8,9 @@ Escribir un programa que pida dos palabras y diga si riman o no.
 - Si no coinciden → no riman.
 """
 
-# Definimos una función para limpiar la terminal según el sistema operativo
+# Definición de función para limpiar la terminal
 def limpiar_terminal():
-    """Limpia la terminal según el sistema operativo"""
-    # Si el sistema es Windows usa 'cls', si no (Linux/Mac) usa 'clear'
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls') # Ejecuta el comando 'cls' en Windows para limpiar la pantalla
 
 # Definimos una función que verifica si dos palabras riman
 def verificar_rima(palabra_1: str, palabra_2: str) -> str:

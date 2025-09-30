@@ -11,11 +11,9 @@ Opciones:
 Si el usuario ingresa una opción incorrecta, se muestra "Opción errónea".
 """
 
-# Definimos una función para limpiar la terminal según el sistema operativo
+# Definición de función para limpiar la terminal
 def limpiar_terminal():
-    """Limpia la terminal según el sistema operativo"""
-    # Si el sistema es Windows usa 'cls', si no (Linux/Mac) usa 'clear'
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls') # Ejecuta el comando 'cls' en Windows para limpiar la pantalla
 
 # Definimos una función para registrar el voto según el candidato elegido
 def votar(candidato: str) -> str:
