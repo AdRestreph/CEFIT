@@ -5,7 +5,7 @@ import os
 Programa de votación.
 Permite al usuario elegir un candidato por el cual votar.
 Opciones: 
-- Candidato A → Partido rojo
+- Candidato Taller 1.2 → Partido rojo
 - Candidato B → Partido verde
 - Candidato C → Partido azul
 Si el usuario ingresa una opción incorrecta, se muestra "Opción errónea".
@@ -23,7 +23,7 @@ def votar(candidato: str) -> str:
     Parámetros
     ----------
     candidato : str
-        Letra del candidato elegido (A, B, C o D)
+        Letra del candidato elegido (Taller 1.2, B, C o D)
     
     Retorna
     -------
@@ -34,7 +34,7 @@ def votar(candidato: str) -> str:
     candidato = candidato.upper()
 
     # Verificamos qué candidato eligió el usuario y retornamos el mensaje correspondiente
-    if candidato == "A":
+    if candidato == "Taller 1.2":
         return "Usted ha votado por el partido rojo"
     elif candidato == "B":
         return "Usted ha votado por el partido verde"
@@ -46,7 +46,7 @@ def votar(candidato: str) -> str:
         return "Opción errónea"  # Si el usuario ingresó cualquier otra letra
 
 # Solicitamos al usuario que ingrese la letra del candidato
-candidato = input("Ingrese la letra del candidato por el que desea votar (A(Partido rojo), B(Partido verde), C(Partido azul), D(Voto en Blanco)): \n")
+candidato = input("Ingrese la letra del candidato por el que desea votar (Taller 1.2(Partido rojo), B(Partido verde), C(Partido azul), D(Voto en Blanco)): \n")
 
 # Limpiamos la terminal para mostrar el resultado
 limpiar_terminal()
