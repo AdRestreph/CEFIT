@@ -1,7 +1,9 @@
 # TALLER
 ## Ejercicio 21
 
-El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para gestionar sus instalaciones y eventos. Cada recinto se registra con código único, nombre, tipo (salón, auditorio, sala de reuniones), ubicación dentro del complejo, dimensiones, capacidad según configuración (teatro, escuela, banquete), características técnicas, tarifas por hora/día y disponibilidad.
+El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para gestionar sus instalaciones y eventos. 
+
+Cada recinto se registra con código único, nombre, tipo (salón, auditorio, sala de reuniones), ubicación dentro del complejo, dimensiones, capacidad según configuración (teatro, escuela, banquete), características técnicas, tarifas por hora/día y disponibilidad.
 
 Los equipamientos incluyen código de inventario, tipo (audiovisual, mobiliario, decoración), descripción detallada, cantidad disponible, estado, ubicación de almacenamiento, valor de reposición, vida útil estimada y mantenimiento requerido.
 
