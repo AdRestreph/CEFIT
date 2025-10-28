@@ -81,3 +81,17 @@ El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para g
 ## Crear consultas combinadas: 
 -	Combinar múltiples operadores y funciones
 -	Crear consultas jerárquicas
+
+# PREGUNTAS
+## SISTEMA DE GESTIÓN PARA EVENTOS Y CONVENCIONES "EVENTPRO"
+1.	¿Cuáles son todos los servicios contratados para un evento específico?
+2.	¿Qué eventos tienen más de 200 asistentes?
+3.	¿Cuáles son los recintos disponibles el 10 de mayo de 2024 con capacidad mínima de 100 personas?
+4.	¿Qué eventos son conferencias o reuniones corporativas?
+5.	¿Cuáles son las cotizaciones emitidas en febrero de 2024?
+6.	¿Qué equipamientos son de tipo Audiovisual, Mobiliario o Iluminación?
+7.	¿Cuáles son los servicios con descripciones que contienen las palabras "premium" o "exclusivo"?
+8.	¿Qué eventos pasados no tienen evaluación post-evento?
+9.	¿Cuáles son los recintos ordenados por capacidad descendente y tarifa ascendente?
+10.	¿Cuáles son los ingresos totales por tipo de evento y mes?
+
