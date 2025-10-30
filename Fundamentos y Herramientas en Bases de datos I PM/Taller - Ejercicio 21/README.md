@@ -95,3 +95,38 @@ El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para g
 9.	¿Cuáles son los recintos ordenados por capacidad descendente y tarifa ascendente?
 10.	¿Cuáles son los ingresos totales por tipo de evento y mes?
 
+# TRIGGERS - VIEWS - SP's - EVENTS - FUNCTIONS
+
+Este sistema administra un centro de convenciones, recintos, equipamientos, servicios, clientes, eventos y personal.
+
+### Procedimientos Almacenados:
+1.	CrearCotizacionEvento: Crea una cotización detallada para un evento potencial.
+2.	ReservarRecinto: Reserva un recinto para un evento verificando disponibilidad.
+3.	AsignarEquipamientoEvento: Asigna equipamiento necesario para un evento.
+4.	ProgramarPersonalEvento: Programa el personal necesario según tipo de evento.
+5.	RegistrarEvaluacionPostEvento: Registra la evaluación y feedback posterior a un evento.
+### Triggers:
+1.	TR_ActualizarDisponibilidadRecinto: Actualiza la disponibilidad de recintos tras reservas.
+2.	TR_VerificarConflictosHorarios: Verifica posibles conflictos horarios al programar eventos.
+3.	TR_ActualizarInventarioEquipamiento: Actualiza el inventario de equipamiento tras asignación.
+4.	TR_CalcularCostosEvento: Recalcula automáticamente los costos al modificar servicios.
+5.	TR_GenerarCronogramaActividades: Genera un cronograma detallado al confirmar un evento.
+### Vistas:
+1.	V_EventosProgramados: Calendario de eventos programados por recinto.
+2.	V_DisponibilidadRecintos: Muestra la disponibilidad de recintos por fecha y hora.
+3.	V_EquipamientoDisponible: Inventario de equipamiento disponible por tipo.
+4.	V_CotizacionesPendientes: Lista de cotizaciones pendientes de aprobación.
+5.	V_AsignacionPersonal: Detalle de asignación de personal por evento.
+### Eventos:
+1.	EVT_VerificarPreparativosEventos: Verifica preparativos para eventos próximos.
+2.	EVT_GenerarReportesPostEvento: Genera reportes posteriores a eventos realizados.
+3.	EVT_ActualizarDisponibilidadTemporal: Actualiza la disponibilidad temporal de recintos.
+4.	EVT_ControlarMantenimientoEquipos: Programa mantenimiento preventivo de equipos.
+5.	EVT_AnalizarRendimientoServicios: Analiza el rendimiento y satisfacción por tipo de servicio.
+### Funciones:
+1.	FN_CalcularCapacidadConfiguracion: Calcula la capacidad de un recinto según configuración.
+2.	FN_VerificarDisponibilidadPeriodo: Verifica disponibilidad de un recinto para un periodo.
+3.	FN_ObtenerPersonalDisponible: Identifica personal disponible según tipo y fecha.
+4.	FN_CalcularPresupuestoEvento: Calcula el presupuesto total de un evento según servicios.
+5.	FN_EstimarOcupacionAnual: Estima la ocupación anual de recintos según histórico.
+
