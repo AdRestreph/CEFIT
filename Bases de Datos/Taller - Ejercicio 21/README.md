@@ -27,11 +27,11 @@ El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para g
 
 ### CREACION DB Y TABLAS
 
-[SCRIPT - CREAR DB Y TABLAS](Creacion_DB_Y_Tablas.sql)
+[SCRIPT - CREAR DB Y TABLAS](Scripts/Creacion_DB_Y_Tablas.sql)
 
 ### INSERTAR DATOS
 
-[SCRIPT - INSERTAR DATOS EN DB](Insert_datos.sql)
+[SCRIPT - INSERTAR DATOS EN DB](Scripts/Insert_datos.sql)
 
 # INSTRUCCIONES GENERALES
  
@@ -43,6 +43,13 @@ El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para g
 ## Implementar eliminación en cascada: 
 -	Identificar relaciones padre-hijo donde sea apropiado aplicar ON DELETE CASCADE
 -	Implementar la restricción ON DELETE CASCADE en las claves foráneas relevantes
+
+## MODELO ENTIDAD RELACION
+### [ENLACE DIRECTO A DRIVE](https://drive.google.com/file/d/1esl7uNhzW6a3gPgM-8oQCO-7HlL97M_O/view?usp=sharing)
+![MODELO ENTIDAD/RELACION](Imagenes/modelo_ER.png)
+
+## TABLAS NORMALIZADAS
+![Normalizacion.png](Imagenes/Normalizacion.png)
 
 ## Definir índices apropiados: 
 -	Crear índices simples para columnas frecuentemente buscadas
