@@ -23,6 +23,10 @@ El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para g
 
 10. Las evaluaciones post-evento documentan código, evento, fecha de evaluación, aspectos valorados, puntuación obtenida, comentarios del cliente, incidencias reportadas, lecciones aprendidas y recomendaciones para futuros eventos.
 
+### CREACION DB Y TABLAS
+ARCHIVO ADJUNTO - (HACER CLICK)
+[Creacion_DB_tablas.sql](Creacion_DB_tablas.sql)
+
 # INSTRUCCIONES GENERALES
  
 ## Crear modelo Entidad-Relación: 
