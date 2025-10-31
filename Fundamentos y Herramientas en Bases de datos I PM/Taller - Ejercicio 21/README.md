@@ -1,4 +1,6 @@
 # TALLER
+### TODOS LOS ARCHIVOS DE LOS SCRIPT'S ESTAN ADJUNTOS, Y ENLAZADOS, SOLO SE DEBE REALIZAR CLICK PARA ABRIR EL APARTADO
+
 ## Ejercicio 21
 
 El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para gestionar sus instalaciones y eventos. 
@@ -24,8 +26,12 @@ El centro de convenciones "Espacios Magníficos S.A." necesita un sistema para g
 10. Las evaluaciones post-evento documentan código, evento, fecha de evaluación, aspectos valorados, puntuación obtenida, comentarios del cliente, incidencias reportadas, lecciones aprendidas y recomendaciones para futuros eventos.
 
 ### CREACION DB Y TABLAS
-ARCHIVO ADJUNTO - (HACER CLICK)
-[Creacion_DB_tablas.sql](Creacion_DB_tablas.sql)
+
+[SCRIPT - CREAR DB Y TABLAS](Creacion_DB_Y_Tablas.sql)
+
+### INSERTAR DATOS
+
+[SCRIPT - INSERTAR DATOS EN DB](Insert_datos.sql)
 
 # INSTRUCCIONES GENERALES
  
