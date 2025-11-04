@@ -37,5 +37,16 @@ y el total a pagar, todos con formato de 2 decimales
 ### Archivo -> [Ejercicio3.py](Ejercicio3.py)
 
 ## Ejercicio 4
+Desarrolla un programa que determine el grupo etario de una persona
+según su edad. Crea una función llamada obtener_grupo_etario que
+reciba un número entero correspondiente a la edad y devuelva una cadena
+que indique si la persona es: "Niño" (0–12 años), "Adolescente" (13–17
+años), "Adulto" (18–64 años) o "Adulto mayor" (65 años o más).
+La función debe verificar que la edad no sea negativa; si lo es, debe
+devolver un mensaje de error como "Edad no válida". Luego, implementa
+una función mostrar_clasificacion que reciba el nombre (cadena de texto)
+y la edad (entero) de una persona, y muestre un mensaje en pantalla
+indicando a qué grupo etario pertenece, por ejemplo: "Lucía es un(a)
+Adulto"
 
 ### Archivo -> [Ejercicio4.py](Ejercicio4.py)
