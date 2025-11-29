@@ -55,7 +55,4 @@ class Ticket(ABC):
 
     def imprimir_ticket(self):
         print(f"Ticket Número: {self.__numero_ticket}")
-        print(f"Fecha de Emisión: {self.__fecha_emision}")
-        print(f"Ruta: {self.__ruta}")
-        print(f"Asiento: {self.__asiento}")
-        print(f"Tipo de Pasajero: {self._tipo_pasajero}")
+        print(f"tipo_pasajero}")
