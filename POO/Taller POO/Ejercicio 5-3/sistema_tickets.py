@@ -1,316 +1,192 @@
-from abc import ABC, abstractmethod
-from datetime import datetime, timedelta
-from typing import List
+import abc
+from datetime import datetime
 
-class Ticket(ABC):
-    _contador_tickets = 1000
+class Ticket(abc.ABC):
     """
-    Clase abstracta base para todos los tipos de tickets.
+    Clase abstracta que define la plantilla para cualquier ticket de viaje.
+    - Abstracción: Define interfaces obligatorias.
+    - Encapsulamiento: Protege datos sensibles del ticket.
     """
-    def __init__(self, ruta: str, asiento: str, precio_base: float):
-        self.__numero_ticket = Ticket._contador_tickets
-        Ticket._contador_tickets += 1
-        self.__fecha_emision = datetime.now()
+
+    def __init__(self, numero_ticket, ruta, asiento, precio_base):
+        # Validación básica de datos de entrada
+        if not numero_ticket or not isinstance(numero_ticket, str):
+            raise ValueError("El número de ticket es inválido.")
+        if precio_base < 0:
+            raise ValueError("El precio base no puede ser negativo.")
+
+        # Atributos Privados (Encapsulamiento Fuerte)
+        self.__numero_ticket = numero_ticket
+        self.__fecha_emision = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.__ruta = ruta
         self.__asiento = asiento
         self.__precio_base = precio_base
+
+        # Atributo Protegido (Accesible por subclases)
         self._tipo_pasajero = "Genérico"
-    
-    # Getters para acceso controlado (ENCAPSULAMIENTO)
+
+    # Getters para atributos privados necesarios para lectura
     @property
-    def numero_ticket(self) -> int:
+    def numero_ticket(self):
         return self.__numero_ticket
-    
+
     @property
-    def fecha_emision(self) -> datetime:
-        return self.__fecha_emision
-    
-    @property
-    def ruta(self) -> str:
-        return self.__ruta
-    
-    @property
-    def asiento(self) -> str:
-        return self.__asiento
-    
-    @property
-    def precio_base(self) -> float:
+    def precio_base(self):
         return self.__precio_base
-    
+
     @property
-    def tipo_pasajero(self) -> str:
-        return self._tipo_pasajero
+    def ruta(self):
+        return self.__ruta
 
-    @abstractmethod
-    def calcular_precio_final(self) -> float:
-        """Calcula el precio final con descuentos específicos."""
+    def imprimir_ticket(self):
+        """Metodo concreto que imprime los detalles básicos del ticket."""
+        # Llama a __str__ implícitamente
+        print(self)
+
+    # Métodos Abstractos (Contrato para las subclases)
+    @abc.abstractmethod
+    def calcular_precio_final(self):
+        """Debe retornar el precio float final tras aplicar reglas de negocio."""
         pass
-    
-    @abstractmethod
-    def validar_ticket(self) -> bool:
-        """Valida los requisitos específicos del ticket."""
+
+    @abc.abstractmethod
+    def validar_ticket(self):
+        """Debe retornar bool indicando si el ticket cumple requisitos para viajar."""
         pass
 
-    def imprimir_ticket(self) -> str:
-        """Genera la representación impresa del ticket."""
-        precio_final = self.calcular_precio_final()
-        validez = "✓ VÁLIDO" if self.validar_ticket() else "✗ INVÁLIDO"
-        
-        ticket_str = f"""
-╔═══════════════════════════════════════════════════════╗
-║               TICKET DE TRANSPORTE                    ║
-╠═══════════════════════════════════════════════════════╣
-║ Número: #{self.__numero_ticket:04d}                            
-║ Tipo: {self._tipo_pasajero:<30}
-║ Fecha: {self.__fecha_emision.strftime('%d/%m/%Y %H:%M')}              
-║ Ruta: {self.__ruta:<40}
-║ Asiento: {self.__asiento:<35}
-║ Precio Base: ${self.__precio_base:,.2f}                    
-║ Precio Final: ${precio_final:,.2f}                   
-║ Ahorro: ${self.__precio_base - precio_final:,.2f}                      
-║ Estado: {validez:<35}
-╚═══════════════════════════════════════════════════════╝
-"""
-        return ticket_str
-
-    def _aplicar_descuento(self, porcentaje: float) -> float:
-        """
-        Metodo protegido para aplicar descuentos.
-        
-        Args:
-            porcentaje: Porcentaje de descuento (0-100)
-        
-        Returns:
-            Precio con descuento aplicado
-        """
-        descuento = self.__precio_base * (porcentaje / 100)
-        return self.__precio_base - descuento
+    def __str__(self):
+        return (f"[{self.__numero_ticket}] Pasajero: {self._tipo_pasajero} | "
+                f"Ruta: {self.__ruta} | Asiento: {self.__asiento}")
 
 
 class TicketRegular(Ticket):
     """
-    Ticket para pasajeros regulares sin descuento.
-    Implementa HERENCIA de Ticket.
+    Ticket para pasajeros sin descuentos especiales.
+    Puede ser ida y vuelta.
     """
-    
-    def __init__(self, ruta: str, asiento: str, precio_base: float, ida_vuelta: bool = False):
-        super().__init__(ruta, asiento, precio_base)
-        self._tipo_pasajero = "Pasajero Regular"
+
+    def __init__(self, numero_ticket, ruta, asiento, precio_base, ida_vuelta=False):
+        super().__init__(numero_ticket, ruta, asiento, precio_base)
+        self._tipo_pasajero = "Regular"
         self.__ida_vuelta = ida_vuelta
-        self.__tarifa_normal = precio_base
-    
-    @property
-    def ida_vuelta(self) -> bool:
-        return self.__ida_vuelta
-    
-    def calcular_precio_final(self) -> float:
-        """
-        POLIMORFISMO: Implementación específica para pasajero regular.
-        Ida y vuelta tiene 10% de descuento.
-        """
+
+    # Metodo privado para cálculos internos (Encapsulamiento)
+    def __calcular_recargo_retorno(self):
+        # Si es ida y vuelta, cobramos el doble pero con un 10% de descuento global
         if self.__ida_vuelta:
-            # Descuento del 10% por ida y vuelta
-            return self._aplicar_descuento(10) * 2
-        return self.__tarifa_normal
-    
-    def validar_ticket(self) -> bool:
-        """POLIMORFISMO: Validación para ticket regular."""
-        # Ticket regular siempre válido si fue emitido
+            return (self.precio_base * 2) * 0.90
+        return self.precio_base
+
+    # POLIMORFISMO
+    def calcular_precio_final(self):
+        return self.__calcular_recargo_retorno()
+
+    # POLIMORFISMO
+    def validar_ticket(self):
+        # El ticket regular siempre es válido si se pagó
         return True
-    
-    def imprimir_ticket(self) -> str:
-        ticket = super().imprimir_ticket()
+
+    def __str__(self):
         tipo_viaje = "Ida y Vuelta" if self.__ida_vuelta else "Solo Ida"
-        return ticket + f"║ Tipo de viaje: {tipo_viaje}\n╚═══════════════════════════════════════════════════════╝\n"
+        return super().__str__() + f" | Tipo: {tipo_viaje}"
 
 
 class TicketEstudiante(Ticket):
     """
-    Ticket para estudiantes con 50% de descuento.
-    Implementa HERENCIA de Ticket.
+    Ticket con 50% de descuento. Requiere carnet.
     """
-    
-    DESCUENTO_ESTUDIANTE = 50
-    def __init__(self, ruta: str, asiento: str, precio_base: float, carnet_universitario: str):
-        super().__init__(ruta, asiento, precio_base)
+
+    def __init__(self, numero_ticket, ruta, asiento, precio_base, carnet_universitario):
+        super().__init__(numero_ticket, ruta, asiento, precio_base)
         self._tipo_pasajero = "Estudiante"
         self.__carnet_universitario = carnet_universitario
-        self.__descuento_50 = self.DESCUENTO_ESTUDIANTE
-    
-    @property
-    def carnet_universitario(self) -> str:
-        # Retorna carnet parcialmente oculto (ENCAPSULAMIENTO)
-        return f"***{self.__carnet_universitario[-4:]}"
-    
-    def calcular_precio_final(self) -> float:
-        """POLIMORFISMO: Aplica 50% de descuento estudiantil."""
-        return self._aplicar_descuento(self.__descuento_50)
-    
-    def validar_ticket(self) -> bool:
-        """POLIMORFISMO: Valida que el carnet tenga formato correcto."""
-        # Validar que el carnet tenga al menos 6 caracteres
-        return len(self.__carnet_universitario) >= 6
-    
-    def imprimir_ticket(self) -> str:
-        ticket = super().imprimir_ticket()
-        return ticket + f"║ Carnet: {self.carnet_universitario}\n║ Descuento: {self.__descuento_50}%\n╚═══════════════════════════════════════════════════════╝\n"
+        self.__descuento_50 = 0.50
+
+    # Metodo privado requerido (Encapsulamiento)
+    def __aplicar_descuento(self):
+        return self.precio_base * (1 - self.__descuento_50)
+
+    # POLIMORFISMO
+    def calcular_precio_final(self):
+        return self.__aplicar_descuento()
+
+    # POLIMORFISMO
+    def validar_ticket(self):
+        # Valida que exista un carnet registrado
+        if self.__carnet_universitario and len(self.__carnet_universitario) > 3:
+            return True
+        print(f"ERROR: Ticket {self.numero_ticket} inválido (Carnet nulo o muy corto).")
+        return False
+
+    def __str__(self):
+        return super().__str__() + f" | Carnet: {self.__carnet_universitario}"
 
 
 class TicketAdultoMayor(Ticket):
     """
-    Ticket para adultos mayores con 30% de descuento.
-    Implementa HERENCIA de Ticket.
+    Ticket con 30% de descuento. Restricción de horario.
     """
-    
-    DESCUENTO_ADULTO_MAYOR = 30
-    HORA_INICIO_ESPECIAL = 6
-    HORA_FIN_ESPECIAL = 10
-    
-    def __init__(self, ruta: str, asiento: str, precio_base: float, 
-                 cedula: str, horario_especial: bool = False):
-        super().__init__(ruta, asiento, precio_base)
+
+    def __init__(self, numero_ticket, ruta, asiento, precio_base, cedula, horario_especial=False):
+        super().__init__(numero_ticket, ruta, asiento, precio_base)
         self._tipo_pasajero = "Adulto Mayor"
         self.__cedula = cedula
-        self.__descuento_30 = self.DESCUENTO_ADULTO_MAYOR
-        self.__horario_especial = horario_especial
-    
-    @property
-    def cedula(self) -> str:
-        # Retorna cédula parcialmente oculta (ENCAPSULAMIENTO)
-        return f"***{self.__cedula[-3:]}"
-    
-    def calcular_precio_final(self) -> float:
-        """
-        POLIMORFISMO: Aplica 30% de descuento para adulto mayor.
-        Descuento adicional del 5% en horario especial.
-        """
-        descuento_total = self.__descuento_30
-        if self.__horario_especial:
-            descuento_total += 5
-        return self._aplicar_descuento(descuento_total)
-    
-    def validar_ticket(self) -> bool:
-        """POLIMORFISMO: Valida cédula y horario especial si aplica."""
-        # Validar formato de cédula (mínimo 6 dígitos)
-        cedula_valida = len(self.__cedula) >= 6 and self.__cedula.isdigit()
-        
-        if self.__horario_especial:
-            hora_actual = self.fecha_emision.hour
-            horario_valido = self.HORA_INICIO_ESPECIAL <= hora_actual <= self.HORA_FIN_ESPECIAL
-            return cedula_valida and horario_valido
-        
-        return cedula_valida
-    
-    def imprimir_ticket(self) -> str:
-        ticket = super().imprimir_ticket()
-        horario = "Sí (6:00-10:00)" if self.__horario_especial else "No"
-        descuento_total = self.__descuento_30 + (5 if self.__horario_especial else 0)
-        return ticket + f"║ Cédula: {self.cedula}\n║ Horario Especial: {horario}\n║ Descuento Total: {descuento_total}%\n╚═══════════════════════════════════════════════════════╝\n"
+        self.__descuento_30 = 0.30
+        self.__horario_especial = horario_especial  # True si viaja en horas pico (sin descuento extra)
+
+    # Metodo privado (Encapsulamiento)
+    def __aplicar_descuento(self):
+        # Si viaja en horario especial (pico), el descuento es menor (ej. 10%)
+        descuento = 0.10 if self.__horario_especial else self.__descuento_30
+        return self.precio_base * (1 - descuento)
+
+    # POLIMORFISMO
+    def calcular_precio_final(self):
+        return self.__aplicar_descuento()
+
+    # POLIMORFISMO
+    def validar_ticket(self):
+        # Valida que la cédula sea numérica y válida
+        if self.__cedula.isdigit() and len(self.__cedula) >= 6:
+            return True
+        print(f"ERROR: Ticket {self.numero_ticket} inválido (Cédula incorrecta).")
+        return False
+
+    def __str__(self):
+        nota = "Horario Pico" if self.__horario_especial else "Horario Valle"
+        return super().__str__() + f" | Doc: {self.__cedula} ({nota})"
 
 
 class TicketTurista(Ticket):
     """
-    Ticket para turistas con pase turístico multiviaje.
-    Implementa HERENCIA de Ticket.
+    Ticket tipo 'Pase'. Multiviaje incrementa precio base.
     """
-    
-    def __init__(self, ruta: str, asiento: str, precio_base: float,
-                 pase_turistico: str, dias_validez: int = 7, multiviaje: bool = True):
-        super().__init__(ruta, asiento, precio_base)
+
+    def __init__(self, numero_ticket, ruta, asiento, precio_base, pase_turistico, multiviaje=False):
+        super().__init__(numero_ticket, ruta, asiento, precio_base)
         self._tipo_pasajero = "Turista"
         self.__pase_turistico = pase_turistico
-        self.__dias_validez = dias_validez
+        self.__dias_validez = 7  # Fijo por defecto
         self.__multiviaje = multiviaje
-        self.__fecha_vencimiento = self.fecha_emision + timedelta(days=dias_validez)
-    
-    @property
-    def pase_turistico(self) -> str:
-        return self.__pase_turistico
-    
-    @property
-    def fecha_vencimiento(self) -> datetime:
-        return self.__fecha_vencimiento
-    
-    def calcular_precio_final(self) -> float:
-        """
-        POLIMORFISMO: Precio package para turistas.
-        Package multiviaje tiene descuento del 20%.
-        """
-        if self.__multiviaje:
-            return self._aplicar_descuento(20)
-        return self.precio_base
-    
-    def validar_ticket(self) -> bool:
-        """POLIMORFISMO: Valida pase turístico y vigencia."""
-        # Validar formato de pase (debe empezar con 'PT-')
-        pase_valido = self.__pase_turistico.startswith('PT-')
-        
-        # Validar que no haya vencido
-        vigente = datetime.now() <= self.__fecha_vencimiento
-        
-        return pase_valido and vigente
-    
-    def imprimir_ticket(self) -> str:
-        ticket = super().imprimir_ticket()
-        tipo = "Multiviaje" if self.__multiviaje else "Viaje único"
-        return ticket + f"║ Pase: {self.__pase_turistico}\n║ Tipo: {tipo}\n║ Válido hasta: {self.__fecha_vencimiento.strftime('%d/%m/%Y')}\n║ Días de validez: {self.__dias_validez}\n╚═══════════════════════════════════════════════════════╝\n"
 
+    # Metodo privado (Encapsulamiento)
+    def __calcular_tarifa_package(self):
+        # Si es multiviaje, el precio base aumenta un 50%
+        factor = 1.5 if self.__multiviaje else 1.0
+        return self.precio_base * factor
 
-class SistemaTickets:
-    """
-    Clase para gestionar la emisión y validación de tickets.
-    Demuestra POLIMORFISMO en acción.
-    """
-    
-    def __init__(self):
-        self.__tickets_emitidos: List[Ticket] = []
-    
-    def emitir_ticket(self, ticket: Ticket) -> None:
-        """Emite un ticket y lo agrega al sistema."""
-        self.__tickets_emitidos.append(ticket)
-        print(ticket.imprimir_ticket())
-    
-    def validar_todos_tickets(self) -> None:
-        """Valida todos los tickets de forma POLIMÓRFICA."""
-        print("\n" + "="*60)
-        print("VALIDACIÓN DE TICKETS (POLIMORFISMO EN ACCIÓN)")
-        print("="*60)
-        
-        for ticket in self.__tickets_emitidos:
-            estado = "✓ VÁLIDO" if ticket.validar_ticket() else "✗ INVÁLIDO"
-            print(f"Ticket #{ticket.numero_ticket:04d} - {ticket.tipo_pasajero}: {estado}")
-    
-    def calcular_ingresos_totales(self) -> float:
-        """Calcula ingresos totales de forma POLIMÓRFICA."""
-        total = sum(ticket.calcular_precio_final() for ticket in self.__tickets_emitidos)
-        return total
-    
-    def generar_reporte(self) -> None:
-        """Genera reporte completo del sistema."""
-        print("\n" + "="*60)
-        print("REPORTE FINANCIERO DEL SISTEMA")
-        print("="*60)
-        
-        # Agrupar por tipo de pasajero
-        tipos = {}
-        for ticket in self.__tickets_emitidos:
-            tipo = ticket.tipo_pasajero
-            precio = ticket.calcular_precio_final()
-            
-            if tipo not in tipos:
-                tipos[tipo] = {'cantidad': 0, 'ingresos': 0}
-            
-            tipos[tipo]['cantidad'] += 1
-            tipos[tipo]['ingresos'] += precio
-        
-        # Imprimir reporte
-        for tipo, datos in tipos.items():
-            print(f"\n{tipo}:")
-            print(f"  Cantidad: {datos['cantidad']} tickets")
-            print(f"  Ingresos: ${datos['ingresos']:,.2f}")
-        
-        total = self.calcular_ingresos_totales()
-        print(f"\n{'─'*60}")
-        print(f"INGRESOS TOTALES: ${total:,.2f}")
-        print(f"TICKETS EMITIDOS: {len(self.__tickets_emitidos)}")
-        print("="*60)
+    # POLIMORFISMO
+    def calcular_precio_final(self):
+        return self.__calcular_tarifa_package()
+
+    # POLIMORFISMO
+    def validar_ticket(self):
+        # Valida que el pase empiece con 'TUR-'
+        if self.__pase_turistico.startswith("TUR-"):
+            return True
+        print(f"ERROR: Ticket {self.numero_ticket} inválido (Pase turístico desconocido).")
+        return False
+
+    def __str__(self):
+        mod = "Multiviaje" if self.__multiviaje else "Simple"
+        return super().__str__() + f" | Pase: {self.__pase_turistico} [{mod}]"
