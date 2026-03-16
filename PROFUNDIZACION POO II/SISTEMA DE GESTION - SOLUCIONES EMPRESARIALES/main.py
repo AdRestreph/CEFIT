@@ -1,7 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication
-
-from Database.connection import DatabaseConnection
+from database.connection import DatabaseConnection
 from repositories.cliente_repository import ClienteRepository
 from repositories.consultor_repository import ConsultorRepository
 from repositories.servicio_repository import ServicioRepository
@@ -17,28 +16,29 @@ from ui.ventana_principal import VentanaPrincipal
 
 
 def main():
+    # QApplication PRIMERO, antes de cualquier otra cosa
+    app = QApplication(sys.argv)
+
+    # Luego la base de datos
     db = DatabaseConnection()
     if not db.connect():
         print("No se pudo conectar a la base de datos.")
         return
 
-    # Empaquetamos todos los repositorios en un diccionario
-    # así los pasamos todos juntos a la ventana con una sola variable
     repos = {
-        "clientes":           ClienteRepository(db),
-        "consultores":        ConsultorRepository(db),
-        "servicios":          ServicioRepository(db),
-        "proyectos":          ProyectoRepository(db),
-        "propuestas":         PropuestaRepository(db),
-        "fases":              FaseRepository(db),
-        "entregables":        EntregableRepository(db),
-        "horas":              HoraTrabajadaRepository(db),
-        "facturas":           FacturaRepository(db),
-        "conocimiento":       ConocimientoRepository(db),
-        "proy_consultores":   ProyectoConsultorRepository(db),
+        "clientes":         ClienteRepository(db),
+        "consultores":      ConsultorRepository(db),
+        "servicios":        ServicioRepository(db),
+        "proyectos":        ProyectoRepository(db),
+        "propuestas":       PropuestaRepository(db),
+        "fases":            FaseRepository(db),
+        "entregables":      EntregableRepository(db),
+        "horas":            HoraTrabajadaRepository(db),
+        "facturas":         FacturaRepository(db),
+        "conocimiento":     ConocimientoRepository(db),
+        "proy_consultores": ProyectoConsultorRepository(db),
     }
 
-    app = QApplication(sys.argv)
     ventana = VentanaPrincipal(repos)
     ventana.show()
     sys.exit(app.exec())

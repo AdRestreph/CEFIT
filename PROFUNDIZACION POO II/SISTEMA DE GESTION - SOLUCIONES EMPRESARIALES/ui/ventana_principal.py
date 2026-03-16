@@ -1,126 +1,153 @@
 from PyQt6.QtWidgets import (
-    QMainWindow,   # ventana principal con soporte para barra de menú y status bar
-    QWidget,       # contenedor genérico, base de todos los widgets
-    QHBoxLayout,   # organiza elementos horizontalmente (sidebar | contenido)
-    QVBoxLayout,   # organiza elementos verticalmente (botones apilados)
-    QPushButton,   # botón clickeable
-    QLabel,        # texto estático
-    QStackedWidget # contenedor que muestra UN solo widget a la vez (como pestañas)
+    QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
+    QPushButton, QLabel, QStackedWidget, QComboBox
 )
-from PyQt6.QtCore import Qt  # contiene constantes como alineación, tamaños, etc.
+from PyQt6.QtCore import Qt
+
+from ui.themes import obtener_tema, cambiar_tema, estilo_ventana
+from ui.iconos.iconos import favicon
+from ui.modulos.clientes_widget     import ClientesWidget
+from ui.modulos.consultores_widget  import ConsultoresWidget
+from ui.modulos.servicios_widget    import ServiciosWidget
+from ui.modulos.facturas_widget     import FacturasWidget
 
 
 class VentanaPrincipal(QMainWindow):
 
     def __init__(self, repos):
         super().__init__()
+        self.repos           = repos
+        self.botones_sidebar = []
+        self.setWindowTitle("Sistema de Gestion — Soluciones Empresariales")
+        self.setWindowIcon(favicon("app"))
+        self.setMinimumSize(1100, 650)
+        self._construir_ui()
+        self._aplicar_tema()
 
-        # repos es un diccionario con todos los repositorios
-        # lo guardamos para pasárselo a cada sección cuando la creemos
-        self.repos = repos
-
-        self.setWindowTitle("Sistema de Gestión — Soluciones Empresariales")
-        self.setMinimumSize(1000, 600)
-
-        # ── Contenedor raíz ───────────────────────────────────────
-        # QMainWindow exige un widget central, todo lo demás va adentro
+    def _construir_ui(self):
         raiz = QWidget()
         self.setCentralWidget(raiz)
-
-        # Layout horizontal: sidebar a la izquierda, contenido a la derecha
         layout_raiz = QHBoxLayout()
-        layout_raiz.setSpacing(0)       # sin espacio entre sidebar y contenido
-        layout_raiz.setContentsMargins(0, 0, 0, 0)  # sin márgenes en los bordes
+        layout_raiz.setSpacing(0)
+        layout_raiz.setContentsMargins(0, 0, 0, 0)
         raiz.setLayout(layout_raiz)
 
-        # ── Sidebar ───────────────────────────────────────────────
-        sidebar = QWidget()
-        sidebar.setFixedWidth(200)       # ancho fijo de 200px, no se estira
-        sidebar.setStyleSheet("background-color: #2c3e50;")  # color oscuro
+        self.sidebar = QWidget()
+        self.sidebar.setFixedWidth(210)
         layout_sidebar = QVBoxLayout()
-        layout_sidebar.setSpacing(4)
-        layout_sidebar.setContentsMargins(8, 16, 8, 16)
-        sidebar.setLayout(layout_sidebar)
+        layout_sidebar.setSpacing(2)
+        layout_sidebar.setContentsMargins(10, 16, 10, 16)
+        self.sidebar.setLayout(layout_sidebar)
 
-        # Título del sidebar
-        titulo = QLabel("📊 Gestión")
-        titulo.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
-        titulo.setAlignment(Qt.AlignmentFlag.AlignCenter)  # centrar el texto
-        layout_sidebar.addWidget(titulo)
+        self.lbl_titulo = QLabel("Soluciones\nEmpresariales")
+        self.lbl_titulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout_sidebar.addWidget(self.lbl_titulo)
 
-        # Espaciador pequeño debajo del título
-        layout_sidebar.addSpacing(12)
-
-        # ── Área de contenido ─────────────────────────────────────
-        # QStackedWidget muestra un solo "panel" a la vez
-        # cuando el usuario hace clic en un botón del sidebar, cambiamos cuál panel se ve
         self.stack = QStackedWidget()
-        self.stack.setStyleSheet("background-color: #f5f6fa;")
 
-        # ── Crear botones del sidebar y sus páginas ───────────────
-        # Cada módulo tiene un botón en el sidebar y una página en el stack
         modulos = [
-            ("👥  Clientes",      self._pagina_placeholder("Clientes")),
-            ("🧑‍💼  Consultores",   self._pagina_placeholder("Consultores")),
-            ("📋  Servicios",     self._pagina_placeholder("Servicios")),
-            ("🗂️  Proyectos",     self._pagina_placeholder("Proyectos")),
-            ("📝  Propuestas",    self._pagina_placeholder("Propuestas")),
-            ("🔀  Fases",         self._pagina_placeholder("Fases")),
-            ("📦  Entregables",   self._pagina_placeholder("Entregables")),
-            ("⏱️  Horas",         self._pagina_placeholder("Horas Trabajadas")),
-            ("🧾  Facturas",      self._pagina_placeholder("Facturas")),
-            ("📚  Conocimiento",  self._pagina_placeholder("Conocimiento")),
+            ("Clientes",         ClientesWidget(self.repos["clientes"])),
+            ("Consultores",      ConsultoresWidget(self.repos["consultores"])),
+            ("Servicios",        ServiciosWidget(self.repos["servicios"])),
+            ("Proyectos",        self._placeholder("Proyectos")),
+            ("Propuestas",       self._placeholder("Propuestas")),
+            ("Fases",            self._placeholder("Fases")),
+            ("Entregables",      self._placeholder("Entregables")),
+            ("Horas Trabajadas", self._placeholder("Horas Trabajadas")),
+            ("Facturas",         FacturasWidget(self.repos["facturas"])),
+            ("Conocimiento",     self._placeholder("Conocimiento")),
         ]
 
         for texto, pagina in modulos:
-            # Crear botón
             boton = QPushButton(texto)
-            boton.setStyleSheet("""
-                QPushButton {
-                    color: white;
-                    background-color: transparent;
-                    border: none;
-                    padding: 10px;
-                    text-align: left;
-                    font-size: 13px;
-                    border-radius: 6px;
-                }
-                QPushButton:hover {
-                    background-color: #3d5166;
-                }
-                QPushButton:pressed {
-                    background-color: #1a252f;
-                }
-            """)
-
-            # Agregar la página al stack y guardar su índice
+            boton.setCheckable(True)
             indice = self.stack.addWidget(pagina)
-
-            # Conectar el botón al stack
-            # lambda captura el índice actual del for para cada botón
-            boton.clicked.connect(lambda checked, i=indice: self.stack.setCurrentIndex(i))
-
+            boton.clicked.connect(lambda checked, i=indice: self._cambiar_modulo(i))
             layout_sidebar.addWidget(boton)
+            self.botones_sidebar.append(boton)
 
-        # Empuja todo hacia arriba, dejando espacio vacío abajo
+        self.botones_sidebar[0].setChecked(True)
         layout_sidebar.addStretch()
 
-        # ── Ensamblar sidebar + contenido ─────────────────────────
-        layout_raiz.addWidget(sidebar)
+        self.lbl_tema = QLabel("Tema:")
+        layout_sidebar.addWidget(self.lbl_tema)
+        self.combo_tema = QComboBox()
+        self.combo_tema.addItems(["Charcoal Pro", "Ivory Gold"])
+        self.combo_tema.setCurrentText("Charcoal Pro")
+        self.combo_tema.currentTextChanged.connect(self._on_cambiar_tema)
+        layout_sidebar.addWidget(self.combo_tema)
+
+        layout_raiz.addWidget(self.sidebar)
         layout_raiz.addWidget(self.stack)
 
-    def _pagina_placeholder(self, nombre):
-        """
-        Crea una página temporal con solo un título centrado.
-        Cada módulo va a reemplazar esto con su tabla real.
-        """
+    def _cambiar_modulo(self, indice):
+        self.stack.setCurrentIndex(indice)
+        for i, btn in enumerate(self.botones_sidebar):
+            btn.setChecked(i == indice)
+
+    def _on_cambiar_tema(self, nombre):
+        mapa = {"Charcoal Pro": "charcoal", "Ivory Gold": "ivory"}
+        cambiar_tema(mapa[nombre])
+        self._aplicar_tema()
+        widget_actual = self.stack.currentWidget()
+        if hasattr(widget_actual, "_aplicar_tema"):
+            widget_actual._aplicar_tema()
+
+    def _aplicar_tema(self):
+        t = obtener_tema()
+        self.setStyleSheet(estilo_ventana(t))
+        self.sidebar.setStyleSheet(f"""
+            QWidget {{ background-color: {t['sidebar']}; }}
+            QPushButton {{
+                background-color: transparent;
+                color: {t['sidebar_texto']};
+                border: none;
+                padding: 10px 14px;
+                text-align: left;
+                font-size: 13px;
+                border-radius: 6px;
+            }}
+            QPushButton:hover {{
+                background-color: {t['sidebar_hover']};
+                color: {t['sidebar_activo_txt']};
+            }}
+            QPushButton:checked {{
+                background-color: {t['sidebar_activo']};
+                color: {t['sidebar_activo_txt']};
+                font-weight: bold;
+            }}
+        """)
+        self.lbl_titulo.setStyleSheet(
+            f"font-size: 13px; font-weight: bold; color: {t['sidebar_activo_txt']}; padding: 8px 4px 16px 4px;"
+        )
+        self.lbl_tema.setStyleSheet(f"font-size: 11px; padding: 0 4px; color: {t['sidebar_texto']};")
+        self.combo_tema.setStyleSheet(f"""
+            QComboBox {{
+                background-color: {t['sidebar_hover']};
+                color: {t['sidebar_texto']};
+                border: 1px solid {t['borde']};
+                border-radius: 4px;
+                padding: 4px 8px;
+                font-size: 11px;
+            }}
+            QComboBox QAbstractItemView {{
+                background-color: {t['sidebar']};
+                color: {t['sidebar_texto']};
+                selection-background-color: {t['sidebar_activo']};
+            }}
+        """)
+
+    def _placeholder(self, nombre):
+        t = obtener_tema()
         pagina = QWidget()
         layout = QVBoxLayout()
         pagina.setLayout(layout)
-
-        etiqueta = QLabel(f"Módulo: {nombre}")
+        etiqueta = QLabel(nombre)
         etiqueta.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        etiqueta.setStyleSheet("font-size: 24px; color: #95a5a6;")
-
+        etiqueta.setStyleSheet(f"font-size: 26px; color: {t['texto_suave']};")
         layout.addWidget(etiqueta)
+        sub = QLabel("Modulo en construccion")
+        sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        sub.setStyleSheet(f"font-size: 13px; color: {t['texto_suave']};")
+        layout.addWidget(sub)
         return pagina

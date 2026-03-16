@@ -25,7 +25,8 @@ class DatabaseConnection:
                 user=self.user,
                 password=self.password,
                 database=self.database,
-                port=self.port
+                port=self.port,
+                use_pure = True
             )
 
             if self.connection.is_connected():
