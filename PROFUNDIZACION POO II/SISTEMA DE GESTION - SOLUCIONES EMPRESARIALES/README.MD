@@ -5,10 +5,10 @@ Sistema de gestión empresarial desarrollado con Python y PyQt6, conectado a MyS
 ---
 ## Entregables
 
-### Video:
+### Video: 
 
 
-### Canva (presentacion):
+### Canva (presentacion): [Presentacion soluciones empresariales PDF](assets/presentacion/presentacion_soluciones_empresariales.pptx.pdf)
 
 ---
 
