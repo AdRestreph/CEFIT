@@ -1,0 +1,211 @@
+from datetime import date
+
+from PyQt6.QtWidgets import (
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTableWidget,
+    QTableWidgetItem, QDialog, QLineEdit, QComboBox,
+    QLabel, QMessageBox, QFileDialog
+)
+from PyQt6.QtCore import Qt
+
+from ui.themes import obtener_tema, estilo_boton, estilo_input, estilo_tabla
+from ui.iconos.iconos import iconos_crud, favicon
+
+
+class FacturasView(QWidget):
+    """
+    Vista del modulo de Facturas.
+    Delega logica al FacturaController.
+    """
+
+    def __init__(self, controller):
+        super().__init__()
+        self.controller = controller
+        self._construir_ui()
+        self._aplicar_tema()
+        self._cargar_datos()
+
+    def _construir_ui(self):
+        layout = QVBoxLayout()
+        layout.setSpacing(10)
+        layout.setContentsMargins(16, 16, 16, 16)
+        self.setLayout(layout)
+
+        self.titulo = QLabel("Facturas")
+        layout.addWidget(self.titulo)
+
+        barra = QHBoxLayout()
+        self.btn_nuevo    = QPushButton("  Nuevo")
+        self.btn_editar   = QPushButton("  Editar")
+        self.btn_eliminar = QPushButton("  Eliminar")
+        self.btn_excel    = QPushButton("  Exportar Excel")
+        self.btn_pdf      = QPushButton("  Exportar PDF")
+        for btn in [self.btn_nuevo, self.btn_editar, self.btn_eliminar,
+                    self.btn_excel, self.btn_pdf]:
+            btn.setMinimumHeight(34)
+        barra.addWidget(self.btn_nuevo)
+        barra.addWidget(self.btn_editar)
+        barra.addWidget(self.btn_eliminar)
+        barra.addSpacing(20)
+        barra.addWidget(self.btn_excel)
+        barra.addWidget(self.btn_pdf)
+        barra.addStretch()
+        layout.addLayout(barra)
+
+        filtros = QHBoxLayout()
+        self.campo_busqueda = QLineEdit()
+        self.campo_busqueda.setPlaceholderText("Buscar por codigo o cliente...")
+        self.campo_busqueda.setMinimumHeight(32)
+        self.filtro_estado = QComboBox()
+        self.filtro_estado.addItems(["Todos los estados", "pendiente", "pagada", "vencida", "anulada"])
+        self.filtro_estado.setMinimumHeight(32)
+        self.btn_buscar  = QPushButton("  Buscar")
+        self.btn_limpiar = QPushButton("  Limpiar")
+        self.btn_buscar.setMinimumHeight(32)
+        self.btn_limpiar.setMinimumHeight(32)
+        filtros.addWidget(self.campo_busqueda, 3)
+        filtros.addWidget(self.filtro_estado, 1)
+        filtros.addWidget(self.btn_buscar)
+        filtros.addWidget(self.btn_limpiar)
+        layout.addLayout(filtros)
+
+        self.tabla = QTableWidget()
+        columnas = ["Codigo", "Cliente", "Proyecto", "Fecha Emision",
+                    "Fecha Vencimiento", "Monto Total", "Estado", "Notas"]
+        self.tabla.setColumnCount(len(columnas))
+        self.tabla.setHorizontalHeaderLabels(columnas)
+        self.tabla.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.tabla.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.tabla.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
+        self.tabla.horizontalHeader().setStretchLastSection(True)
+        self.tabla.verticalHeader().setVisible(False)
+        self.tabla.setAlternatingRowColors(True)
+        layout.addWidget(self.tabla)
+
+        self.lbl_total = QLabel("Total: 0 registros")
+        layout.addWidget(self.lbl_total)
+
+        self.btn_nuevo.clicked.connect(self._abrir_formulario_nuevo)
+        self.btn_editar.clicked.connect(self._abrir_formulario_editar)
+        self.btn_eliminar.clicked.connect(self._eliminar)
+        self.btn_excel.clicked.connect(self._exportar_excel)
+        self.btn_buscar.clicked.connect(self._buscar)
+        self.btn_limpiar.clicked.connect(self._limpiar)
+        self.campo_busqueda.returnPressed.connect(self._buscar)
+        self.filtro_estado.currentIndexChanged.connect(self._buscar)
+
+        iconos_crud(self.btn_nuevo, self.btn_editar, self.btn_eliminar,
+                    self.btn_excel, self.btn_pdf, self.btn_buscar, self.btn_limpiar)
+
+    def _aplicar_tema(self):
+        t = obtener_tema()
+        self.setStyleSheet(f"background-color: {t['fondo']}; color: {t['texto']};")
+        self.titulo.setStyleSheet(f"font-size: 22px; font-weight: bold; color: {t['titulo']};")
+        self.lbl_total.setStyleSheet(f"font-size: 11px; color: {t['texto_suave']};")
+        self.btn_nuevo.setStyleSheet(estilo_boton(t["btn_primario"],  t["btn_primario_txt"]))
+        self.btn_editar.setStyleSheet(estilo_boton(t["btn_editar"],   t["btn_editar_txt"]))
+        self.btn_eliminar.setStyleSheet(estilo_boton(t["btn_peligro"],t["btn_peligro_txt"]))
+        self.btn_excel.setStyleSheet(estilo_boton(t["btn_excel"],     t["btn_excel_txt"]))
+        self.btn_pdf.setStyleSheet(estilo_boton(t["btn_pdf"],         t["btn_pdf_txt"]))
+        self.btn_buscar.setStyleSheet(estilo_boton(t["btn_buscar"],   t["btn_buscar_txt"]))
+        self.btn_limpiar.setStyleSheet(estilo_boton(t["btn_limpiar"], t["btn_limpiar_txt"]))
+        self.campo_busqueda.setStyleSheet(estilo_input(t))
+        self.filtro_estado.setStyleSheet(estilo_input(t))
+        self.tabla.setStyleSheet(estilo_tabla(t))
+
+    def _cargar_datos(self, facturas=None):
+        if facturas is None:
+            facturas = self.controller.obtener_todos()
+        self.tabla.setRowCount(len(facturas))
+        for fila, f in enumerate(facturas):
+            self.tabla.setItem(fila, 0, QTableWidgetItem(str(f.codigo or "")))
+            self.tabla.setItem(fila, 1, QTableWidgetItem(str(f.codigo_cliente or "")))
+            self.tabla.setItem(fila, 2, QTableWidgetItem(str(f.codigo_proyecto or "")))
+            self.tabla.setItem(fila, 3, QTableWidgetItem(str(f.fecha_emision or "")))
+            self.tabla.setItem(fila, 4, QTableWidgetItem(str(f.fecha_vencimiento or "")))
+            self.tabla.setItem(fila, 5, QTableWidgetItem(str(f.monto_total or "")))
+            self.tabla.setItem(fila, 6, QTableWidgetItem(str(f.estado or "")))
+            self.tabla.setItem(fila, 7, QTableWidgetItem(str(f.notas or "")))
+        self.tabla.resizeColumnsToContents()
+        self.lbl_total.setText(f"Total: {len(facturas)} registros")
+
+    def _fila_seleccionada(self):
+        fila = self.tabla.currentRow()
+        if fila == -1:
+            return None
+        return self.tabla.item(fila, 0).text()
+
+    def _buscar(self):
+        termino = self.campo_busqueda.text().strip()
+        estado  = self.filtro_estado.currentText()
+        resultados = self.controller.buscar(
+            termino=termino,
+            estado=None if estado == "Todos los estados" else estado,
+        )
+        self._cargar_datos(resultados)
+
+    def _limpiar(self):
+        self.campo_busqueda.clear()
+        self.filtro_estado.setCurrentIndex(0)
+        self._cargar_datos()
+
+    def _abrir_formulario_nuevo(self):
+        from views.dialogs.factura_form_dialog import FormularioFactura
+        dialogo = FormularioFactura(self.controller)
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            self._cargar_datos()
+
+    def _abrir_formulario_editar(self):
+        codigo = self._fila_seleccionada()
+        if not codigo:
+            QMessageBox.warning(self, "Aviso", "Selecciona una factura para editar.")
+            return
+        factura = self.controller.obtener_por_codigo(codigo)
+        from views.dialogs.factura_form_dialog import FormularioFactura
+        dialogo = FormularioFactura(self.controller, factura)
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            self._cargar_datos()
+
+    def _eliminar(self):
+        codigo = self._fila_seleccionada()
+        if not codigo:
+            QMessageBox.warning(self, "Aviso", "Selecciona una factura para eliminar.")
+            return
+        respuesta = QMessageBox.question(
+            self, "Confirmar",
+            f"Eliminar la factura {codigo}?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if respuesta == QMessageBox.StandardButton.Yes:
+            try:
+                self.controller.eliminar(codigo)
+                self._cargar_datos()
+                QMessageBox.information(self, "Exito", "Factura eliminada correctamente.")
+            except Exception as e:
+                QMessageBox.critical(self, "Error", str(e))
+
+    def _exportar_excel(self):
+        try:
+            import openpyxl
+            from openpyxl.styles import Font, PatternFill
+        except ImportError:
+            QMessageBox.critical(self, "Error", "Instala openpyxl:\npip install openpyxl")
+            return
+        facturas = self.controller.obtener_todos()
+        ruta, _ = QFileDialog.getSaveFileName(self, "Guardar Excel", "facturas.xlsx", "Excel (*.xlsx)")
+        if not ruta:
+            return
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Facturas"
+        cols = ["Codigo", "Cliente", "Proyecto", "Fecha Emision",
+                "Fecha Vencimiento", "Monto Total", "Estado", "Notas"]
+        for i, col in enumerate(cols, 1):
+            cell = ws.cell(row=1, column=i, value=col)
+            cell.font = Font(bold=True, color="FFFFFF")
+            cell.fill = PatternFill("solid", fgColor="2C3E50")
+        for f in facturas:
+            ws.append([f.codigo, f.codigo_cliente, f.codigo_proyecto,
+                       str(f.fecha_emision or ""), str(f.fecha_vencimiento or ""),
+                       str(f.monto_total or ""), f.estado, f.notas])
+        wb.save(ruta)
+        QMessageBox.information(self, "Exportado", f"Excel guardado en:\n{ruta}")
