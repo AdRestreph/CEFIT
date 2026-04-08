@@ -20,7 +20,9 @@ Sistema de gestión empresarial desarrollado con Python y PyQt6, conectado a MyS
 - Windows 10/11
 
 ---
-
+## Diagrama de casos de uso
+![digrama de casos de uso.png](assets/presentacion/digrama%20de%20casos%20de%20uso.png)
+---
 ## Estructura del proyecto
 
 ```
