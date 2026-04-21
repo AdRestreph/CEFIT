@@ -1,0 +1,33 @@
+IMÁGENES PARA PROYECTO FERRETERÍA (Pexels - Gratis)
+====================================================
+
+BANNER PRINCIPAL:
+- https://images.pexels.com/photos/5691539/pexels-photo-5691539.jpeg?auto=compress&cs=tinysrgb&w=1920
+  (Herramientas de construcción)
+
+NOSOTROS/EMPRESA:
+- https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg?auto=compress&cs=tinysrgb&w=1200
+  (Ferretería y materiales)
+
+PRODUCTOS - Herramientas:
+- https://images.pexels.com/photos/1149137/pexels-photo-1149137.jpeg?auto=compress&cs=tinysrgb&w=800
+  (Herramientas profesionales)
+
+PRODUCTOS - Materiales de Construcción:
+- https://images.pexels.com/photos/162539/architecture-building-construction-work-162539.jpeg?auto=compress&cs=tinysrgb&w=800
+  (Materiales de construcción)
+
+PRODUCTOS - Pinturas:
+- https://images.pexels.com/photos/1428171/pexels-photo-1428171.jpeg?auto=compress&cs=tinysrgb&w=800
+  (Pinturas y rodillos)
+
+PRODUCTOS - Electricidad:
+- https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=800
+  (Cables y electricidad)
+
+INSTRUCCIONES:
+1. Descarga cada imagen desde las URLs
+2. Guárdalas en las carpetas correspondientes:
+   - Banner: imagenes/banner/ferreteria.jpg
+   - Empresa: imagenes/empresa/tienda.jpg
+   - Productos: imagenes/productos/herramientas.jpg, materiales.jpg, pinturas.jpg, electricidad.jpg
