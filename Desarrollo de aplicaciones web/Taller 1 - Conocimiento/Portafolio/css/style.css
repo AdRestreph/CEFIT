@@ -255,10 +255,31 @@ textarea {
 }
 .navbar-brand__icon{
   width: 1.4rem;
+  margin-bottom:0.2rem;
+  margin-right: 0.4rem;
+  transition: 1.2s;
+}
+.nav-link{
+  transition: 1.1s;
+}
+.nav-link:hover{
+  scale: 1.1;
+}
+.navbar-brand{
+  transition: 1.2s;
+}
+.navbar-brand:hover{
+  scale: 1.1;
 }
 
-.navbar-icon, .footer-icon{
+.navbar-icon{
   width: 0.8rem;
+  margin-bottom:0.2rem;
+  margin-right: 0.4rem;
+}
+
+.footer-icon{
+  width: 1.2rem;
   margin-bottom:0.2rem;
   margin-right: 0.4rem;
 }
