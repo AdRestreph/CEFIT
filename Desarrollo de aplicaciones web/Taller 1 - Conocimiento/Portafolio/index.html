@@ -1,149 +1,645 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Landing BEM</title>
-  <link rel="stylesheet" href="./css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> STECH</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="./css/style.css">
+
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header__container">
-    <h1 class="header__logo"></h1>
+    <!-- ================= HEADER ================= -->
 
-    <nav class="header__nav">
-      <ul class="header__menu">
-        <li class="header__item header__item--active">
-          <a href="#" class="header__link">Inicio</a>
-        </li>
-        <li class="header__item">
-          <a href="#" class="header__link">Características</a>
-        </li>
-        <li class="header__item">
-          <a href="#" class="header__link">Precios</a>
-        </li>
-        <li class="header__item">
-          <a href="#" class="header__link">Contacto</a>
-        </li>
-      </ul>
-    </nav>
+    <header class="header">
 
-    <button class="header__cta">Empezar</button>
-  </div>
-</header>
+        <div class="header__container">
+            <div class="header__brand">
+                <img class="header__logo" src="img/circuito-cerebral (1).png" alt="Logo STEC" width="30" height="30">
+                <h1 class="header__title">STEC</h1>
+            </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero__content">
-    <h2 class="hero__title">Transforma tu negocio</h2>
-    <p class="hero__subtitle">La mejor solución digital para crecer</p>
-    <button class="hero__button hero__button--primary">Comenzar ahora</button>
-  </div>
-</section>
+            <nav class="header__nav">
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="features__container">
+                <ul class="header__menu">
 
-    <div class="features__card">
-      <h3 class="features__title">Rápido</h3>
-      <p class="features__description">Optimiza tus procesos</p>
-    </div>
+                    <li class="header__item header__item--active">
+                        <a href="#" class="header__link">
+                            Inicio
+                        </a>
+                    </li>
 
-    <div class="features__card features__card--featured">
-      <h3 class="features__title">Seguro</h3>
-      <p class="features__description">Protección avanzada</p>
-    </div>
+                    <li class="header__item">
+                        <a href="#features" class="header__link">
+                            Características
+                        </a>
+                    </li>
 
-    <div class="features__card">
-      <h3 class="features__title">Escalable</h3>
-      <p class="features__description">Crece sin límites</p>
-    </div>
+                    <li class="header__item">
+                        <a href="#pricing" class="header__link">
+                            Precios
+                        </a>
+                    </li>
 
-  </div>
-</section>
+                    <li class="header__item">
+                        <a href="#contact" class="header__link">
+                            Contacto
+                        </a>
+                    </li>
 
-<!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="testimonials__container">
+                </ul>
 
-    <div class="testimonials__card">
-      <p class="testimonials__text">"Excelente servicio"</p>
-      <span class="testimonials__name">Juan Pérez</span>
-    </div>
+            </nav>
 
-    <div class="testimonials__card testimonials__card--highlight">
-      <p class="testimonials__text">"Muy recomendado"</p>
-      <span class="testimonials__name">María Gómez</span>
-    </div>
+            <button class="header__cta">
 
-  </div>
-</section>
+                Empezar
 
-<!-- PRICING -->
-<section class="pricing">
-  <div class="pricing__container">
+            </button>
 
-    <div class="pricing__plan">
-      <h3 class="pricing__title">Básico</h3>
-      <p class="pricing__price">$10</p>
-      <button class="pricing__button">Comprar</button>
-    </div>
+        </div>
 
-    <div class="pricing__plan pricing__plan--featured">
-      <h3 class="pricing__title">Pro</h3>
-      <p class="pricing__price">$20</p>
-      <button class="pricing__button">Comprar</button>
-    </div>
+    </header>
 
-    <div class="pricing__plan">
-      <h3 class="pricing__title">Premium</h3>
-      <p class="pricing__price">$30</p>
-      <button class="pricing__button">Comprar</button>
-    </div>
+    <!-- ================= HERO ================= -->
 
-  </div>
-</section>
+    <section class="hero">
 
-<!-- CONTACT -->
-<section class="contact-form">
-  <h2 class="contact-form__title">Contáctanos</h2>
+        <div class="hero__content">
 
-  <form class="contact-form__form">
+            <span class="hero__badge">
 
-    <div class="contact-form__field">
-      <input type="text" class="contact-form__input" placeholder="Nombre">
-    </div>
+                 Plataforma líder para empresas
 
-    <div class="contact-form__field contact-form__field--error">
-      <input type="email" class="contact-form__input" placeholder="Email">
-      <span class="contact-form__error">Email inválido</span>
-    </div>
+            </span>
 
-    <div class="contact-form__field">
-      <textarea class="contact-form__textarea" placeholder="Mensaje"></textarea>
-    </div>
+            <h2 class="hero__title">
 
-    <button class="contact-form__submit">Enviar</button>
+                Impulsa tu negocio con soluciones digitales
 
-  </form>
-</section>
+            </h2>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer__container">
+            <p class="hero__subtitle">
 
-    <p class="footer__text">© 2026 MiProducto</p>
+                Automatiza procesos, mejora la productividad y
+                lleva tu empresa al siguiente nivel con nuestra plataforma.
 
-    <div class="footer__links">
-      <a href="#" class="footer__link">Privacidad</a>
-      <a href="#" class="footer__link">Términos</a>
-    </div>
+            </p>
 
-  </div>
-</footer>
+            <div class="hero__buttons">
+
+                <button class="hero__button hero__button--primary">
+
+                    Comenzar
+
+                </button>
+
+                <button class="hero__button hero__button--secondary">
+
+                    Saber más
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="features" id="features">
+
+        <div class="features__container">
+
+            <article class="features__card">
+
+                <div class="features__icon">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                </div>
+
+                <h3 class="features__title">
+
+                    Rápido
+
+                </h3>
+
+                <p class="features__description">
+
+                    Optimiza tus procesos y obtén resultados en cuestión
+                    de segundos gracias a nuestras herramientas.
+
+                </p>
+
+            </article>
+
+            <article class="features__card features__card--featured">
+
+                <div class="features__icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <h3 class="features__title">
+
+                    Seguro
+
+                </h3>
+
+                <p class="features__description">
+
+                    Protegemos toda tu información mediante
+                    protocolos de seguridad modernos.
+
+                </p>
+
+            </article>
+
+            <article class="features__card">
+
+                <div class="features__icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <h3 class="features__title">
+
+                    Escalable
+
+                </h3>
+
+                <p class="features__description">
+
+                    Crece sin límites con una plataforma preparada
+                    para adaptarse a cualquier empresa.
+
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+
+    <section class="testimonials">
+
+        <h2 class="testimonials__title">
+
+            Lo que dicen nuestros clientes
+
+        </h2>
+
+        <p class="testimonials__subtitle">
+
+            Empresas de todo el mundo confían en nosotros.
+
+        </p>
+
+        <div class="testimonials__container">
+
+            <article class="testimonials__card">
+
+                <div class="testimonials__header">
+
+                    <img src="img/persona.jpg"
+                        alt="Juan Pérez"
+                        class="testimonials__avatar">
+
+                    <div>
+
+                        <h3 class="testimonials__name">
+                            Juan Pérez
+                        </h3>
+
+                        <p class="testimonials__job">
+                            CEO • TechSoft
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <p class="testimonials__text">
+
+                    "Desde que comenzamos a utilizar la plataforma,
+                    nuestro equipo aumentó su productividad en más
+                    del 40%. La experiencia ha sido excelente."
+
+                </p>
+
+                <div class="testimonials__quote">
+
+                    ❝
+
+                </div>
+
+            </article>
+
+            <article class="testimonials__card testimonials__card--highlight">
+
+                <div class="testimonials__header">
+
+                    <img src="img/mujer.jpg"
+                        alt="María Gómez"
+                        class="testimonials__avatar">
+
+                    <div>
+
+                        <h3 class="testimonials__name">
+                            María Gómez
+                        </h3>
+
+                        <p class="testimonials__job">
+                            Diseñadora UX
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <p class="testimonials__text">
+
+                    "Una plataforma intuitiva, rápida y segura.
+                    Ha facilitado completamente nuestro trabajo."
+
+                </p>
+
+                <div class="testimonials__quote">
+
+                    ❝
+
+                </div>
+
+            </article>
+
+            <article class="testimonials__card">
+
+                <div class="testimonials__header">
+
+                    <img src="img/hombre.jpg"
+                        alt="Carlos Ruiz"
+                        class="testimonials__avatar">
+
+                    <div>
+
+                        <h3 class="testimonials__name">
+                            Carlos Ruiz
+                        </h3>
+
+                        <p class="testimonials__job">
+                            Marketing Manager
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <p class="testimonials__text">
+
+                    "Recomendado totalmente.
+                    La implementación fue rápida
+                    y el soporte técnico excelente."
+
+                </p>
+
+                <div class="testimonials__quote">
+
+                    ❝
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- ================= PRICING ================= -->
+
+    <section class="pricing" id="pricing">
+
+        <div class="pricing__container">
+
+            <article class="pricing__plan">
+
+                <h3 class="pricing__title">
+
+                    Básico
+
+                </h3>
+
+                <p class="pricing__price">
+
+                    <span>$</span>10
+
+                </p>
+
+                <ul class="pricing__list">
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        5 Proyectos
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Soporte básico
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        10 GB de almacenamiento
+
+                    </li>
+
+                </ul>
+
+                <button class="pricing__button">
+
+                    Comprar
+
+                </button>
+
+            </article>
+
+            <article class="pricing__plan pricing__plan--featured">
+
+                <span class="pricing__badge">
+
+                    MÁS POPULAR
+
+                </span>
+
+                <h3 class="pricing__title">
+
+                    Pro
+
+                </h3>
+
+                <p class="pricing__price">
+
+                    <span>$</span>20
+
+                </p>
+
+                <ul class="pricing__list">
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Proyectos ilimitados
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Soporte 24/7
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        1 TB de almacenamiento
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Estadísticas avanzadas
+
+                    </li>
+
+                </ul>
+
+                <button class="pricing__button">
+
+                    Empezar
+
+                </button>
+
+            </article>
+
+            <article class="pricing__plan">
+
+                <h3 class="pricing__title">
+
+                    Premium
+
+                </h3>
+
+                <p class="pricing__price">
+
+                    <span>$</span>30
+
+                </p>
+
+                <ul class="pricing__list">
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Todo incluido
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        API completa
+
+                    </li>
+
+                    <li class="pricing__item">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Consultoría personalizada
+
+                    </li>
+
+                </ul>
+
+                <button class="pricing__button">
+
+                    Comprar
+
+                </button>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+
+    <section class="contact-form" id="contact">
+
+        <h2 class="contact-form__title">
+
+            Contáctanos
+
+        </h2>
+
+        <form class="contact-form__form">
+
+            <div class="contact-form__field">
+
+                <input
+                    type="text"
+                    class="contact-form__input"
+                    placeholder="Nombre"
+                    required>
+
+            </div>
+
+            <div class="contact-form__field">
+
+                <input
+                    type="email"
+                    class="contact-form__input"
+                    placeholder="Correo electrónico"
+                    required>
+
+            </div>
+
+            <div class="contact-form__field">
+
+                <textarea
+                    class="contact-form__textarea"
+                    placeholder="Escribe tu mensaje..."
+                    required></textarea>
+
+            </div>
+
+            <button class="contact-form__submit">
+
+                Enviar Mensaje
+
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer__container">
+
+            <div>
+
+                <h2 class="footer__logo">
+
+                    STEC
+
+                </h2>
+
+                <p class="footer__text">
+
+                    Soluciones digitales para empresas
+                    que buscan crecer.
+
+                </p>
+
+            </div>
+
+            <div class="footer__links">
+
+                <a href="#" class="footer__link">Inicio</a>
+
+                <a href="#features" class="footer__link">Características</a>
+
+                <a href="#pricing" class="footer__link">Precios</a>
+
+                <a href="#contact" class="footer__link">Contacto</a>
+
+            </div>
+
+            <div>
+
+                <div class="footer__social">
+
+                    <a href="#" class="footer__icon">
+
+                        <i class="fab fa-facebook-f"></i>
+
+                    </a>
+
+                    <a href="#" class="footer__icon">
+
+                        <i class="fab fa-instagram"></i>
+
+                    </a>
+
+                    <a href="#" class="footer__icon">
+
+                        <i class="fab fa-linkedin-in"></i>
+
+                    </a>
+
+                    <a href="#" class="footer__icon">
+
+                        <i class="fab fa-github"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <p class="footer__copy">
+
+            © 2026 STEC. Todos los derechos reservados.
+
+        </p>
+
+    </footer>
 
 </body>
+
 </html>
